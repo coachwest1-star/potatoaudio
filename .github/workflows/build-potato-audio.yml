@@ -1,0 +1,34 @@
+name: Build Potato Audio OS
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: Build Le Potato image
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Build Potato Audio OS
+        uses: armbian/build@main
+        with:
+          armbian_token: ${{ secrets.GITHUB_TOKEN }}
+          armbian_board: "lepotato"
+          armbian_release: "trixie"
+          armbian_target: "build"
+          armbian_kernel_branch: "current"
+          armbian_ui: "minimal"
+          armbian_compress: "sha,img,xz"
+          armbian_runner_clean: "yes"
+          armbian_release_title: "Potato Audio OS for Le Potato"
+          armbian_release_body: |
+            Potato Audio OS for Libre Computer Le Potato.
+            Flash the .img.xz file to a microSD card and boot.
+            Connect Ethernet and open:
+            http://potatoaudio.local:8080
