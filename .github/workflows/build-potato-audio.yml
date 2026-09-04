@@ -13,7 +13,6 @@ jobs:
   build:
     name: Build Le Potato image
     runs-on: ubuntu-latest
-
     steps:
       - name: Build Potato Audio OS
         uses: armbian/build@main
@@ -26,9 +25,10 @@ jobs:
           armbian_ui: "minimal"
           armbian_compress: "sha,img,xz"
           armbian_runner_clean: "yes"
-          armbian_release_title: "Potato Audio OS for Le Potato"
+          armbian_release_title: "Potato Audio OS v2 for Le Potato"
           armbian_release_body: |
-            Potato Audio OS for Libre Computer Le Potato.
+            Potato Audio OS v2 for Libre Computer Le Potato.
+            Includes HDMI Now Playing, custom radio, and browser-selectable audio output.
             Flash the .img.xz file to a microSD card and boot.
             Connect Ethernet and open:
             http://potatoaudio.local:8080

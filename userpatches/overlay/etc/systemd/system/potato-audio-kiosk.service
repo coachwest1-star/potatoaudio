@@ -1,0 +1,21 @@
+[Unit]
+Description=Potato Audio HDMI Kiosk
+After=network-online.target potato-audio.service
+Wants=network-online.target
+Requires=potato-audio.service
+
+[Service]
+User=potatokiosk
+Group=potatokiosk
+PAMName=login
+TTYPath=/dev/tty1
+StandardInput=tty
+StandardOutput=journal
+Environment=HOME=/home/potatokiosk
+Environment=DISPLAY=:0
+ExecStart=/usr/bin/xinit /usr/local/bin/potato-audio-kiosk -- :0 vt1 -keeptty -nolisten tcp
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=graphical.target

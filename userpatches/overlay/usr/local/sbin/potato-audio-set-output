@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+set -euo pipefail
+DEVICE="${1:-}"
+if [[ "$DEVICE" != "default" && ! "$DEVICE" =~ ^hw:[0-9]+,[0-9]+$ ]]; then echo "Invalid ALSA device" >&2; exit 2; fi
+mkdir -p /etc/mpd.conf.d
+cat > /etc/mpd.conf.d/potato-output.conf <<EOF
+audio_output {
+    type        "alsa"
+    name        "Potato Audio Selected Output"
+    device      "$DEVICE"
+    mixer_type  "software"
+}
+EOF
+systemctl restart mpd

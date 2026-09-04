@@ -1,0 +1,1 @@
+potatoaudio ALL=(root) NOPASSWD: /usr/local/sbin/potato-audio-set-output, /usr/local/sbin/potato-audio-test-output

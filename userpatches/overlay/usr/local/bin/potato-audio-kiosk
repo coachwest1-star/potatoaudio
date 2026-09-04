@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+set -e
+xset -dpms
+xset s off
+xset s noblank
+unclutter -idle 0.5 -root &
+exec chromium --kiosk --no-first-run --disable-session-crashed-bubble --disable-infobars --disable-translate --overscroll-history-navigation=0 http://127.0.0.1:8080/display
