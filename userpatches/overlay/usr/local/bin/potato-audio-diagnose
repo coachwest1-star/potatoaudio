@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+set +e
+echo "========== POTATO AUDIO DIAGNOSTICS =========="
+echo
+echo "Board:"
+tr -d '\0' </proc/device-tree/model 2>/dev/null || uname -a
+echo
+echo
+echo "OS:"
+cat /etc/os-release | grep -E '^(PRETTY_NAME|VERSION)='
+echo
+echo "Potato Audio:"
+cat /etc/potato-audio-version 2>/dev/null
+echo
+echo "Network:"
+hostname
+hostname -I
+echo
+echo "ALSA playback devices:"
+aplay -l
+echo
+echo "MPD:"
+systemctl --no-pager --full status mpd | head -35
+echo
+mpc status
+echo
+echo "Potato Audio service:"
+systemctl --no-pager --full status potato-audio | head -35
+echo
+echo "Web health:"
+curl -sS http://127.0.0.1:8080/api/health
+echo
+echo "=============================================="

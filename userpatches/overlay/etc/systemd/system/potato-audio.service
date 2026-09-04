@@ -1,0 +1,20 @@
+[Unit]
+Description=Potato Audio Web Controller
+After=network-online.target mpd.service
+Wants=network-online.target
+Requires=mpd.service
+
+[Service]
+Type=simple
+User=potatoaudio
+Group=audio
+WorkingDirectory=/opt/potato-audio/server
+Environment=PYTHONUNBUFFERED=1
+Environment=MPD_HOST=127.0.0.1
+Environment=MPD_PORT=6600
+ExecStart=/opt/potato-audio/.venv/bin/waitress-serve --listen=0.0.0.0:8080 app:app
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target
