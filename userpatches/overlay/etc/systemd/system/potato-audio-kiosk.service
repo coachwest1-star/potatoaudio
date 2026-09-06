@@ -1,0 +1,16 @@
+[Unit]
+Description=Potato Audio HDMI Now Playing
+After=network-online.target potato-audio.service
+Wants=network-online.target
+Requires=potato-audio.service
+
+[Service]
+Type=simple
+User=root
+Environment=HOME=/root
+ExecStart=/usr/bin/xinit /usr/local/bin/potato-kiosk.sh -- :0 vt7
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

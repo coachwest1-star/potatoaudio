@@ -1,59 +1,215 @@
 <!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Potato Audio</title>
-<link rel="stylesheet" href="/style.css">
-</head>
-<body>
-<div class="app">
-  <aside>
-    <div class="brand">🥔 <span>POTATO AUDIO</span></div>
-    <button class="nav active" data-view="now">Now Playing</button>
-    <button class="nav" data-view="library">Library</button>
-    <button class="nav" data-view="queue">Queue</button>
-    <button class="nav" data-view="settings">Audio</button>
-    <div class="status" id="connection">Connecting…</div>
-  </aside>
-  <main>
-    <section id="now" class="view">
-      <div class="now-wrap">
-        <div class="art" id="art">♫</div>
-        <div class="eyebrow">NOW PLAYING</div>
-        <h1 id="title">Nothing playing</h1>
-        <h2 id="artist">Potato Audio</h2>
-        <div class="progress"><div id="progress"></div></div>
-        <div class="times"><span id="elapsed">0:00</span><span id="duration">0:00</span></div>
-        <div class="controls">
-          <button onclick="ctl('previous')">⏮</button>
-          <button class="play" id="play" onclick="togglePlay()">▶</button>
-          <button onclick="ctl('next')">⏭</button>
-        </div>
-        <label class="volume">🔊 <input id="vol" type="range" min="0" max="100" value="50"></label>
-      </div>
-    </section>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Potato Audio</title><link rel="stylesheet" href="/style.css"></head><body><div class="app"><aside><div class="brand">🥔 <span>POTATO AUDIO</span><small>v2</small></div><button class="nav active" data-view="now">Now Playing</button><button class="nav" data-view="library">Library</button><button class="nav" data-view="radio">Radio</button><button class="nav" data-view="queue">Queue</button><button class="nav" data-view="settings">Audio</button>
+<button class="nav" data-view="hubsettings">Smart Hub</button>
+<button class="nav" data-view="server">Music Server</button><div class="status" id="connection">Connecting…</div></aside><main><section id="now" class="view"><div class="now-wrap"><div class="art">♫</div><div class="eyebrow">NOW PLAYING</div><h1 id="title">Nothing playing</h1><h2 id="artist">Potato Audio</h2><div class="now-meta" id="nowMeta"></div><div class="progress"><div id="progress"></div></div><div class="times"><span id="elapsed">0:00</span><span id="duration">0:00</span></div><div class="controls"><button onclick="ctl('previous')">⏮</button><button class="play" id="play" onclick="togglePlay()">▶</button><button onclick="ctl('next')">⏭</button></div><label class="volume">🔊 <input id="vol" type="range" min="0" max="100" value="50"></label></div></section><section id="library" class="view hidden"><div class="topline"><div><div class="eyebrow">MUSIC</div><h1>Library</h1></div><button class="primary" onclick="scan()">Rescan</button></div><input id="search" class="search" placeholder="Search songs, artists or albums"><div id="libraryList" class="list"></div></section><section id="radio" class="view hidden"><div class="topline"><div><div class="eyebrow">INTERNET RADIO</div><h1>Stations</h1></div><button class="primary" onclick="showAddStation()">＋ Add Station</button></div><div id="stationForm" class="panel hidden"><div class="form-grid"><label>Name<input id="stationName" placeholder="WSM 650"></label><label>Category<input id="stationCategory" placeholder="Country"></label><label class="wide">Stream URL<input id="stationUrl" placeholder="https://stream.example.com/live"></label><label class="wide">Logo URL<input id="stationLogo" placeholder="https://.../logo.png"></label></div><div class="form-actions"><button onclick="cancelStation()">Cancel</button><button id="stationSaveBtn" class="primary" onclick="saveStation()">Save Station</button></div></div>
+<div id="radioList" class="radio-grid"></div>
 
-    <section id="library" class="view hidden">
-      <div class="topline"><div><div class="eyebrow">MUSIC</div><h1>Library</h1></div>
-      <button class="primary" onclick="scan()">Rescan</button></div>
-      <input id="search" class="search" placeholder="Search songs, artists or albums">
-      <div id="libraryList" class="list"></div>
-    </section>
+<div class="radio-directory-panel" id="radioDirectory">
+  <div class="topline directory-topline">
+    <div>
+      <div class="eyebrow">DISCOVER</div>
+      <h2>Radio Directory</h2>
+      <p class="muted">Search thousands of live internet radio stations.</p>
+    </div>
+  </div>
 
-    <section id="queue" class="view hidden">
-      <div class="topline"><div><div class="eyebrow">UP NEXT</div><h1>Queue</h1></div>
-      <button onclick="clearQueue()">Clear</button></div>
-      <div id="queueList" class="list"></div>
-    </section>
+  <div class="directory-search-row">
+    <input id="radioDirectorySearch"
+           class="search"
+           placeholder="Search station name">
+    <button class="primary" onclick="searchRadioDirectory()">Search</button>
+  </div>
 
-    <section id="settings" class="view hidden">
-      <div class="eyebrow">OUTPUT</div><h1>Audio Devices</h1>
-      <p class="muted">Detected ALSA playback devices. v1 reports devices here; output switching is done in /etc/mpd.conf.</p>
-      <div id="devices" class="cards"></div>
-    </section>
-  </main>
+  <div class="genre-buttons">
+    <button onclick="loadPopularRadio()">Popular</button>
+    <button onclick="loadRadioTag('country')">Country</button>
+    <button onclick="loadRadioTag('classic rock')">Classic Rock</button>
+    <button onclick="loadRadioTag('70s')">70s</button>
+    <button onclick="loadRadioTag('80s')">80s</button>
+    <button onclick="loadRadioTag('90s')">90s</button>
+    <button onclick="loadRadioTag('jazz')">Jazz</button>
+    <button onclick="loadRadioTag('r&b')">R&B</button>
+    <button onclick="loadRadioTag('christian')">Christian</button>
+    <button onclick="loadRadioTag('oldies')">Oldies</button>
+    <button onclick="loadRadioTag('classical')">Classical</button>
+    <button onclick="loadRadioTag('news')">News</button>
+  </div>
+
+  <div id="radioDirectoryStatus" class="muted"></div>
+  <div id="radioDirectoryResults" class="directory-grid"></div>
 </div>
-<script src="/app.js"></script>
-</body>
-</html>
+</section>
+<section id="queue" class="view hidden"><div class="topline"><div><div class="eyebrow">UP NEXT</div><h1>Queue</h1></div><button onclick="clearQueue()">Clear</button></div><div id="queueList" class="list"></div></section><section id="hubsettings" class="view hidden">
+
+<div class="topline">
+  <div>
+    <div class="eyebrow">DISPLAY</div>
+    <h1>Smart Hub</h1>
+  </div>
+
+  <button class="primary" onclick="saveHubSettings()">
+    Save Settings
+  </button>
+</div>
+
+<div class="panel">
+
+  <div class="form-grid">
+
+    <label class="wide">
+      Weather Location
+      <input id="hubWeather"
+             placeholder="Cookeville, TN">
+    </label>
+
+    <label class="wide">
+      Quote
+      <input id="hubQuote"
+             placeholder="Inspirational quote">
+    </label>
+
+    <label>
+      Slideshow Seconds
+      <input id="hubSlideSeconds"
+             type="number"
+             min="5"
+             max="120">
+    </label>
+
+    <label>
+      Calendar Events
+      <input id="hubCalendarEvents"
+             type="number"
+             min="1"
+             max="6">
+    </label>
+
+  </div>
+
+  <div class="hub-toggle-list">
+
+    <label>
+      <input type="checkbox" id="hubQuoteEnabled">
+      Show inspirational quote
+    </label>
+
+    <label>
+      <input type="checkbox" id="hubPhotosEnabled">
+      Show Google Photos
+    </label>
+
+    <label>
+      <input type="checkbox" id="hubCalendarEnabled">
+      Show Google Calendar
+    </label>
+
+    <label>
+      <input type="checkbox" id="hubRadioEnabled">
+      Show Live Radio
+    </label>
+
+  </div>
+
+  <div class="photo-management">
+
+    <div class="eyebrow">GOOGLE PHOTOS</div>
+
+    <div id="photoStatus" class="muted">
+      Checking photo library…
+    </div>
+
+    <div class="photo-control-buttons">
+
+      <button onclick="selectGooglePhotos()">
+        🖼 Select New Google Photos
+      </button>
+
+      <button class="primary" onclick="downloadGooglePhotos()">
+        ↻ Refresh / Download Selected Photos
+      </button>
+
+    </div>
+
+  </div>
+
+  <div class="form-actions">
+    <button onclick="window.open('/hub.html','_blank')">
+      Preview Smart Hub
+    </button>
+
+    <button class="primary" onclick="saveHubSettings()">
+      Save Settings
+    </button>
+  </div>
+
+</div>
+
+</section>
+
+<section id="settings" class="view hidden"><div class="eyebrow">OUTPUT</div><h1>Audio Devices</h1><p class="muted">Choose HDMI or a connected USB DAC.</p><div id="devices" class="cards"></div></section>
+<section class="view hidden" id="server">
+  <div class="section-header">
+    <div>
+      <h2>Music Server</h2>
+      <p class="muted">Storage, network sharing, and automatic library scanning.</p>
+    </div>
+    <button onclick="loadServerStatus()">Refresh</button>
+  </div>
+
+  <div class="server-grid">
+
+    <div class="card">
+      <h3>Music Drive</h3>
+      <div class="server-value" id="serverDriveStatus">Checking…</div>
+      <div class="muted" id="serverDrivePath"></div>
+
+      <div class="storage-bar">
+        <div class="storage-used" id="serverStorageBar"></div>
+      </div>
+
+      <div class="server-stats">
+        <div>
+          <strong id="serverUsed">—</strong>
+          <span>Used</span>
+        </div>
+        <div>
+          <strong id="serverFree">—</strong>
+          <span>Free</span>
+        </div>
+        <div>
+          <strong id="serverTotal">—</strong>
+          <span>Total</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Music Library</h3>
+      <div class="big-number" id="serverSongs">—</div>
+      <div class="muted">Songs indexed by MPD</div>
+      <br>
+      <button class="primary" onclick="serverScan()">Scan Music Library</button>
+      <div class="muted" id="serverScanStatus"></div>
+    </div>
+
+    <div class="card">
+      <h3>Services</h3>
+      <div class="service-row"><span>MPD</span><strong id="serverMpd">—</strong></div>
+      <div class="service-row"><span>Network Share</span><strong id="serverSamba">—</strong></div>
+      <div class="service-row"><span>Auto Scanner</span><strong id="serverScanner">—</strong></div>
+    </div>
+
+    <div class="card">
+      <h3>Network</h3>
+      <div class="server-address" id="serverIp">—</div>
+      <div class="muted">Finder connection</div>
+      <div class="code-box" id="serverSmb">—</div>
+      <br>
+      <div class="muted">System uptime</div>
+      <div id="serverUptime">—</div>
+    </div>
+
+  </div>
+</section>
+
+</main></div><script src="/app.js"></script></body></html>

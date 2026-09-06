@@ -2,3 +2,13 @@
 *.img.xz
 *.sha
 .DS_Store
+.venv/
+__pycache__/
+*.pyc
+
+# Potato Audio private/local Google data
+google-credentials.json
+google-token.json
+google-photos-token.json
+google-selected-photos.json
+client_secret*.json
