@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Potato Smart Hub</title>
+  <link rel="stylesheet" href="/hub.css">
+</head>
+<body>
+
+<div class="hub">
+
+  <header>
+    <div>
+      <div class="brand">🥔 POTATO SMART HUB</div>
+      <div id="date"></div>
+    </div>
+
+    <div class="clock" id="clock">--:--</div>
+
+    <div class="weather-mini">
+      <span id="weatherIcon">☀️</span>
+      <span id="temp">--°</span>
+    </div>
+  </header>
+
+  <div class="inspiration-quote">
+    “Whatever the mind can conceive and believe, it can achieve.”
+  </div>
+
+  <main>
+
+    <section class="photo-panel">
+      <div class="slideshow" id="photoArea">
+        <div id="bgA" class="photo-bg active"></div>
+        <div id="bgB" class="photo-bg"></div>
+
+        <img id="photoA" class="slide active" alt="">
+        <img id="photoB" class="slide" alt="">
+
+        <div class="photo-shade"></div>
+        <div class="photo-caption" id="photoCaption"></div>
+      </div>
+    </section>
+
+    <section class="weather-panel card">
+      <div class="section-title">WEATHER</div>
+
+      <div class="weather-location" id="weatherLocation">Cookeville, TN</div>
+
+      <div class="weather-current">
+        <span id="bigWeatherIcon">☀️</span>
+        <span id="bigTemp">--°</span>
+      </div>
+
+      <div id="weatherDescription">Loading weather…</div>
+
+      <div class="forecast" id="forecast"></div>
+    </section>
+
+    <section class="news-panel card">
+      <div class="section-title">UPCOMING</div>
+
+      <div id="news">
+        <div class="news-item">Smart Hub news feed coming next.</div>
+        <div class="news-item">Potato Audio is online.</div>
+        <div class="news-item">HDMI always-on mode enabled.</div>
+      </div>
+    </section>
+
+    <section class="playing-panel card">
+      <div class="section-title" id="playMode">NOW PLAYING</div>
+
+      <div class="playing-title" id="playTitle">Potato Audio</div>
+
+      <div class="playing-artist" id="playArtist">Ready</div>
+
+      <div class="playing-meta" id="playMeta"></div>
+
+      <div class="progress">
+        <div id="playProgress"></div>
+      </div>
+
+      <div class="playing-time">
+        <span id="elapsed">0:00</span>
+        <span id="duration">0:00</span>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <span>● Connected</span>
+    <span>Potato Audio</span>
+    <span>potatoaudio.local:8080</span>
+  </footer>
+
+</div>
+
+<script src="/hub.js"></script>
+
+</body>
+</html>
